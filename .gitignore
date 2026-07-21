@@ -1,0 +1,7 @@
+cleanup-plan.md
+cleanup-plan.yaml
+cleanup-snapshot.json
+cleanup-undo.log
+cleanup-history.json
+broom-preferences.yaml
+.DS_Store
