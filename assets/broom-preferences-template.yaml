@@ -1,0 +1,19 @@
+---
+preferences:
+  downloads_excel_age: 180
+  downloads_ppt_age: 180
+  downloads_zip_age: 90
+  downloads_image_age: 90
+  cache_auto_clean: true
+  duplicate_auto_clean: true
+  periodic_scan: "none"
+  periodic_day: "sunday"
+  periodic_time: "10:00"
+  quiet_hours_start: "22:00"
+  quiet_hours_end: "08:00"
+learned:
+  frequent_download_patterns: []
+  usually_keeps_patterns: []
+  usually_deletes_patterns: []
+  always_keep_keywords: []
+schema_version: "1.0"
