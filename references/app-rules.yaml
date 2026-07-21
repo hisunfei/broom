@@ -1,0 +1,137 @@
+# App Cleanup Rules
+# Community can contribute new apps.
+
+schema_version: "2.1"
+
+apps:
+  - name: "企业微信"
+    bundle_id: "com.tencent.WeWorkMac"
+    container_path: "~/Library/Containers/com.tencent.WeWorkMac"
+    process_name: "WeWorkMac"
+    category: "app"
+    rules:
+      - {name: "聊天缓存", path: "Data/Documents/Profiles/*/Caches", size_threshold: "1GB", default_action: review, trash_command: "trash <resolved_path>/*"}
+      - {name: "浏览器缓存", path: "Data/Documents/cefcache", default_action: review, trash_command: "trash <resolved_path>/*"}
+      - {name: "推送缓存", path: "Data/Documents/Profiles/*/Publishsys", default_action: review, trash_command: "trash <resolved_path>/*"}
+      - {name: "应用缓存", path: "Data/Library/Caches", default_action: clean, safe_command: "rm -rf <resolved_path>/*"}
+    protected: ["Messages", "Data/Documents/Profiles/*/Messages1"]
+
+  - name: "微信"
+    bundle_id: "com.tencent.xinWeChat"
+    container_path: "~/Library/Containers/com.tencent.xinWeChat"
+    process_name: "WeChat"
+    category: "app"
+    rules:
+      - {name: "旧备份", path: "Data/Documents/xwechat_files/old_backup", default_action: review, trash_command: "trash <resolved_path>"}
+      - {name: "运行日志", path: "Data/Documents/app_data/log", default_action: clean, safe_command: "rm -rf <resolved_path>"}
+      - {name: "radium", path: "Data/Documents/app_data/radium", default_action: clean, safe_command: "rm -rf <resolved_path>"}
+      - {name: "插件", path: "Data/Documents/app_data/xplugin", default_action: clean, safe_command: "rm -rf <resolved_path>"}
+      - {name: "应用缓存", path: "Data/Library/Caches", default_action: clean, safe_command: "rm -rf <resolved_path>/*"}
+    protected: ["mmkv", "config", "xwechat_files/*/config"]
+
+  - name: "飞书"
+    process_name: "Lark"
+    category: "app"
+    rules:
+      - {name: "应用缓存", path: "~/Library/Caches/LarkShell", default_action: review, trash_command: "trash <resolved_path>/*"}
+
+  - name: "豆包"
+    process_name: "Doubao"
+    category: "app"
+    rules:
+      - {name: "应用数据", path: "~/Library/Application Support/Doubao", default_action: review}
+      - {name: "应用缓存", path: "~/Library/Caches/Doubao", default_action: clean, safe_command: "rm -rf <resolved_path>/*"}
+
+  - name: "Microsoft Edge"
+    process_name: "Microsoft Edge"
+    category: "app"
+    rules:
+      - {name: "浏览器缓存", path: "~/Library/Caches/Microsoft Edge", default_action: review, trash_command: "trash <resolved_path>/*"}
+      - {name: "应用数据", path: "~/Library/Application Support/Microsoft Edge", default_action: review}
+
+  - name: "Trae CN"
+    process_name: "Trae CN"
+    category: "app"
+    rules:
+      - {name: "应用数据", path: "~/Library/Application Support/Trae CN", default_action: review}
+      - {name: "ShipIt", path: "~/Library/Caches/cn.trae.app.ShipIt", default_action: clean, safe_command: "rm -rf <resolved_path>/*"}
+
+  - name: "Xmind 旧版"
+    category: "app"
+    detect_condition: "exists ~/Library/Application Support/Xmind/Electron v3"
+    rules:
+      - {name: "Electron v3", path: "~/Library/Application Support/Xmind/Electron v3", default_action: review}
+
+  - name: "Docker"
+    detect_command: "docker info 2>/dev/null"
+    process_name: "Docker"
+    category: "app"
+    rules:
+      - {name: "悬空资源", command: "docker system prune -f", default_action: review}
+      - {name: "全部未使用镜像", command: "docker image prune -a -f", default_action: skip}
+
+  - name: "iOS 备份"
+    path: "~/Library/Application Support/MobileSync/Backup"
+    category: "app"
+    rules:
+      - {name: "旧设备备份", default_action: review, trash_command: "trash <resolved_path>/*"}
+
+  - name: "Time Machine"
+    detect_command: "tmutil listlocalsnapshots / 2>/dev/null"
+    category: "app"
+    rules:
+      - {name: "本地快照", command: "tmutil thinlocalsnapshots / 1", default_action: review}
+
+  - name: "Steam"
+    process_name: "Steam"
+    category: "skip"
+    rules:
+      - {name: "Steam", path: "~/Library/Application Support/Steam", default_action: skip}
+
+  - name: "夸克"
+    process_name: "Quark"
+    category: "app"
+    rules:
+      - {name: "应用数据", path: "~/Library/Application Support/Quark", default_action: review}
+
+  - name: "Apple Mail"
+    path: "~/Library/Mail"
+    category: "app"
+    rules:
+      - {name: "旧附件", path: "~/Library/Mail/*/Attachments", default_action: review, size_threshold_age: 180}
+
+  - name: "Homebrew"
+    detect_command: "brew --version 2>/dev/null"
+    category: "safe"
+    rules:
+      - {name: "旧版本", command: "brew cleanup --prune=all", default_action: clean}
+      - {name: "90天未使用", command: "brew_unused_packages", default_action: review}
+
+global_protected: ["Messages", "mmkv", "config", "*.db", "*.sqlite", "*.plist"]
+
+personal_doc_keywords:
+  - "毕业证"
+  - "学位证"
+  - "户口本"
+  - "结婚证"
+  - "身份证"
+  - "录用通知书"
+  - "离职证明"
+  - "租房合同"
+  - "电子准迁证"
+  - "学历证书"
+  - "工资单"
+  - "承诺书"
+  - "passport"
+  - "visa"
+  - "license"
+  - "contract"
+  - "insurance"
+
+download_group_patterns:
+  - {pattern: "*流量转化*.xlsx, *统一查询*.xlsx, *AB实验*.xlsx, *batch_statistics*.xlsx", label: "数据导出 Excel", label_en: "Data Export Excel"}
+  - {pattern: "*(1)*, *(2)*, *副本*, * 2.*", label: "重复文件", label_en: "Duplicate Files"}
+  - {pattern: "*.dmg, *.pkg", label: "安装包", label_en: "Installers"}
+  - {pattern: "IMG_*.PNG, IMG_*.JPG, 截屏*, screenshot*", label: "截图/临时图片", label_en: "Screenshots"}
+  - {pattern: "*.zip", label: "压缩包", label_en: "Archives"}
+  - {pattern: "*.pptx, *.ppt", label: "演示文稿", label_en: "Presentations"}
