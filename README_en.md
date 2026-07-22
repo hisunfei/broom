@@ -1,12 +1,12 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/hisunfei/broom/main/assets/broom-logo.png" width="100" alt="Broom" />
+  <img src="https://raw.githubusercontent.com/hisunfei/broom/main/assets/broom-logo.png" width="100" alt="Broom - Free Mac Cleaner & Disk Cleanup Tool" />
 </p>
 
 <h1 align="center">Broom 🧹</h1>
 
 <p align="center">
-  <strong>Your Mac is suffocating.</strong><br/>
-  <strong>No app to install. No subscription. Just say the word.</strong>
+  <strong>Free AI Mac Cleaner — disk cleanup, cache cleaning, large file scanning, all in one sentence.</strong><br/>
+  <strong>The open-source CleanMyMac alternative. No app. No subscription. Just say the word.</strong>
 </p>
 
 <p align="center">
@@ -14,17 +14,24 @@
 </p>
 
 <p align="center">
-  <a href="#installation"><img src="https://img.shields.io/badge/🚀_Install-say_%22broom%22-4A90D9?style=flat-square" alt="Install" /></a>
-  <a href="#safety-rules"><img src="https://img.shields.io/badge/🔒_Safety-10_rules-green?style=flat-square" alt="Safety" /></a>
-  <a href="LICENSE"><img src="https://img.shields.io/badge/📄_License-MIT-lightgrey?style=flat-square" alt="License" /></a>
-  <a href="https://openclaw.ai"><img src="https://img.shields.io/badge/⚡_Powered_by-OpenClaw-orange?style=flat-square" alt="OpenClaw" /></a>
+  <a href="#installation"><img src="https://img.shields.io/badge/🚀_Install-say_%22broom%22-4A90D9?style=flat-square" alt="Install Mac Cleaner" /></a>
+  <a href="#safety-rules"><img src="https://img.shields.io/badge/🔒_Safety-10_rules-green?style=flat-square" alt="Mac Cleaner Safety Rules" /></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/📄_License-MIT-lightgrey?style=flat-square" alt="MIT Open Source License" /></a>
+  <a href="https://openclaw.ai"><img src="https://img.shields.io/badge/⚡_Powered_by-OpenClaw-orange?style=flat-square" alt="Powered by OpenClaw AI" /></a>
+</p>
+
+---
+
+<!-- SEO: keyword-rich paragraph for search engine indexing -->
+<p align="center">
+<sub>Broom is an AI-powered macOS disk cleanup tool that intelligently scans caches, app data (WeChat, Slack, Edge, Docker), iOS backups, Downloads, and large files to free up disk space. A free, open-source alternative to CleanMyMac and DaisyDisk with full undo, trend tracking, and scheduled cleanup. Works on Apple Silicon and Intel Macs.</sub>
 </p>
 
 ---
 
 <br/>
 
-## 💀 Your Mac is suffocating
+## 💀 Your Mac's Disk Space Is Suffocating
 
 Did you know?
 
@@ -36,21 +43,21 @@ Did you know?
 >
 > And your Mac has only **12GB** free. The fans are getting louder.
 
-The old way: install a cleaner app, pay $40/year, put your trust in a black box you don't understand.
+The old way: install a **Mac cleaner app**, pay $40/year, put your trust in a black box you don't understand.
 
-**Broom is different.**
+**Broom is different — it's your AI Mac janitor.**
 
 <br/>
 
-## 🧹 See it in action (30 seconds)
+## 🧹 See It Clean Your Mac (30 seconds)
 
 ```
 You: broom
 
-🧹 Scanning your Mac... (about 30 seconds)
+🧹 Scanning your Mac disk... (about 30 seconds)
 
 
-🧹 Broom Diagnosis Complete
+🧹 Broom Mac Disk Diagnosis Complete
 
 Disk: 34GB free (85% used). I found ~9GB that's safe to clean:
 
@@ -59,35 +66,37 @@ Disk: 34GB free (85% used). I found ~9GB that's safe to clean:
   2. Ollama model          3.2GB  ← an AI model you're not using
   3. Edge cache            503MB  ← pure cache, auto-rebuilds
 
- 📊 Full plan saved to cleanup-plan.md
+ 📊 Full cleanup plan saved to cleanup-plan.md
  Say "execute" — I'll preview everything before touching a single file.
 ```
 
-**No install wizard. No scan progress popup. No "upgrade to Pro". Just one sentence.**
+**No install wizard. No scan progress popup. No "upgrade to Pro". One sentence to clean your Mac.**
 
 <br/>
 
-## ⚔️ Broom vs. CleanMyMac
+## ⚔️ Broom vs CleanMyMac — Free Open-Source Alternative
 
-| | CleanMyMac & friends | **Broom** 🧹 |
+| | CleanMyMac / DaisyDisk | **Broom** 🧹 |
 |:--|:--|:--|
-| **Price** | $40/year | Free, forever |
+| **Price** | $40/year | **Free**, forever (MIT open source) |
 | **Setup** | Download → Install → Grant access → Wait | Say "broom" |
-| **Logic** | Fixed rules, same for everyone | Learns your habits over time |
-| **Oops, deleted the wrong thing?** | Good luck | Say "undo" — restores from Trash |
-| **Transparency** | Black box, you just have to trust it | Every step in a file you can review |
-| **Configuration** | Settings panel | Plain English |
+| **Logic** | Fixed rules, same for everyone | **AI learns** your habits over time |
+| **Deleted wrong file?** | Good luck | Say "undo" — **full restore** from Trash |
+| **Transparency** | Black box, you just have to trust it | Every step in a file you can **review** |
+| **Configuration** | Settings panel | Plain English, **conversational config** |
 | **Open source** | ❌ | ✅ MIT |
 
 <br/>
 
-## ✨ More than a cleaner — a janitor that knows you
+## ✨ More Than a Mac Cache Cleaner — A Janitor That Knows You
 
 <details>
-<summary>🧠 <strong>Smart Diagnosis</strong> — beyond cache scanning</summary>
+<summary>🧠 <strong>Smart Mac Diagnosis</strong> — beyond cache scanning</summary>
 <br/>
 
 Scans WeChat, Slack, Lark, Edge, Docker, iOS backups, Downloads, large files, node_modules, Homebrew orphans... intelligently grouped and sorted by impact. No scrolling through 200-line lists.
+
+Covers the most common macOS space hogs: app caches, chat attachments, browser caches, Docker images, Xcode derived data, npm/pip caches, and more.
 
 </details>
 
@@ -102,7 +111,7 @@ You: Never touch my personal documents
 You: Skip research report PDFs from now on
 ```
 
-Broom saves your preferences in `broom-preferences.yaml` and applies them automatically next time.
+Broom saves your preferences in `broom-preferences.yaml` and applies them automatically next time. No config file editing required.
 
 </details>
 
@@ -110,7 +119,7 @@ Broom saves your preferences in `broom-preferences.yaml` and applies them automa
 <summary>↩️ <strong>Full Undo</strong> — changed your mind? One sentence to restore</summary>
 <br/>
 
-- App data → Trash (recoverable)
+- App data → Trash (recoverable from macOS Trash)
 - Every action logged in `cleanup-undo.log`
 - Say "undo last cleanup" — everything comes back
 
@@ -119,10 +128,10 @@ Broom saves your preferences in `broom-preferences.yaml` and applies them automa
 </details>
 
 <details>
-<summary>📈 <strong>Trend Tracking</strong> — know where your space goes</summary>
+<summary>📈 <strong>Disk Space Trend Tracking</strong> — know where your space goes</summary>
 <br/>
 
-Weekly disk comparisons. Tells you which app is the biggest hoarder:
+Weekly macOS disk comparisons. Tells you which app is the biggest hoarder:
 
 ```
 📈 This week vs last week
@@ -158,12 +167,12 @@ Weekly disk comparisons. Tells you which app is the biggest hoarder:
 <summary>⚠️ <strong>Running App Detection</strong> — won't touch what you're using</summary>
 <br/>
 
-Apps you're currently running are automatically detected. Broom only clears their caches (safe), never their main data.
+macOS apps you're currently running are automatically detected. Broom only clears their caches (safe), never their main data.
 
 </details>
 
 <details>
-<summary>🤖 <strong>Scheduled Patrol (optional)</strong> — you don't need to remember</summary>
+<summary>🤖 <strong>Scheduled Mac Disk Cleanup (optional)</strong> — you don't need to remember</summary>
 <br/>
 
 ```
@@ -185,39 +194,39 @@ You set the frequency, you set the time. Quiet hours respected (default 22:00–
 
 <a id="installation"></a>
 
-## 🚀 Installation
+## 🚀 Install Broom — Free Mac Cleaner
 
 ### Prerequisites
 
-- **macOS** (Apple Silicon or Intel)
+- **macOS** (Apple Silicon M1/M2/M3/M4 or Intel)
 - [OpenClaw](https://openclaw.ai) installed and running
 
-### One command
+### One Command to Install
 
 ```bash
 git clone https://github.com/hisunfei/broom.git ~/.openclaw/workspace/skills/broom
 ```
 
-No config to edit. No dependencies to install. No restart needed.
+No config to edit. No dependencies to install. No Mac restart needed.
 
-### First run
+### Start Cleaning Your Mac
 
 Just say to your OpenClaw assistant:
 
-> **"broom"** or **"help me clean my Mac"**
+> **"broom"** or **"clean my Mac"** or **"disk space running low"**
 
-On first use, Broom introduces itself, guides you through the first cleanup, and collects your preferences through conversation — **no config file editing required**.
+On first use, Broom introduces itself, guides you through the first Mac disk cleanup, and collects your preferences through conversation — **no config file editing required**.
 
 <br/>
 
-## 📋 Command Reference
+## 📋 Mac Cleanup Commands
 
 | You say | Broom does |
 |:--|:--|
-| `broom` / `clean my Mac` | 🔍 Full diagnostic scan |
+| `broom` / `clean my Mac` / `disk cleanup` | 🔍 Full Mac disk diagnostic scan |
 | `quick clean` | ⚡ Skip scan, clean safe items |
-| `undo last cleanup` | ↩️ Restore from Trash |
-| `scan only Downloads` | 🎯 Partial scan of specific area |
+| `undo last cleanup` | ↩️ Restore files from Trash |
+| `scan only Downloads` | 🎯 Partial scan of specific directory |
 | `broom stats` | 🏆 Achievements & leaderboard |
 | `share broom` | 📤 Generate project intro card |
 
@@ -225,9 +234,9 @@ On first use, Broom introduces itself, guides you through the first cleanup, and
 
 <a id="safety-rules"></a>
 
-## 🔒 Safety Rules
+## 🔒 Mac Cleanup Safety Rules
 
-**Broom follows 10 unbreakable safety rules:**
+**Broom follows 10 unbreakable safety rules to protect your Mac data:**
 
 <table>
 <tr>
@@ -244,15 +253,15 @@ On first use, Broom introduces itself, guides you through the first cleanup, and
 </tr>
 <tr>
 <td align="center">4</td>
-<td><strong>App data → Trash</strong> — always recoverable</td>
+<td><strong>App data → macOS Trash</strong> — always recoverable</td>
 </tr>
 <tr>
 <td align="center">5</td>
-<td><strong>Pure caches → rm -rf</strong> — auto-rebuild, zero risk</td>
+<td><strong>Pure caches → rm -rf</strong> — macOS auto-rebuilds, zero risk</td>
 </tr>
 <tr>
 <td align="center">6</td>
-<td><strong>Clear contents, not directories</strong> — avoids permission issues</td>
+<td><strong>Clear contents, not directories</strong> — avoids macOS permission issues</td>
 </tr>
 <tr>
 <td align="center">7</td>
@@ -274,64 +283,70 @@ On first use, Broom introduces itself, guides you through the first cleanup, and
 
 <br/>
 
-## 🔄 How It Works
+## 🔄 Mac Cleanup Workflow
 
 ```
 Phase 0  Onboarding (first time only)
-  │       "Hi! I'm Broom, your AI Mac janitor."
+  │       "Hi! I'm Broom, your AI Mac cleanup janitor."
   ▼
-Phase 1  Diagnosis
+Phase 1  Mac Disk Diagnosis
   │       Parallel scan → Smart grouping → Cleanup plan
   ▼
-Phase 2  Execution
+Phase 2  Execute Cleanup
   │       Safety check → Dry Run preview → Confirm → Clean → Health check
   ▼
 Phase 3  Achievements & Learning
   │       Leaderboard → Badges → Preference learning
   ▼
-Phase 4  Scheduled Patrol (optional)
+Phase 4  Scheduled Mac Cleanup (optional)
           Weekly/Monthly → Diagnose → Notify → Wait for you
 ```
 
 <br/>
 
-## ❓ FAQ
+## ❓ Mac Cleaner FAQ
 
 <details>
-<summary><strong>Is my data safe?</strong></summary>
+<summary><strong>Is Broom safe for cleaning my Mac data?</strong></summary>
 
-Broom runs 100% locally. No data leaves your machine. No analytics. No tracking. Your disk information never leaves your computer.
+Broom runs 100% locally on your Mac. No data leaves your machine. No analytics. No tracking. Your disk information never leaves your computer.
 </details>
 
 <details>
-<summary><strong>Can I undo a cleanup?</strong></summary>
+<summary><strong>Can I undo a Mac cleanup?</strong></summary>
 
-Yes. App data goes to Trash (recoverable). Pure caches auto-rebuild (no recovery needed). Just say "undo last cleanup".
+Yes. App data goes to macOS Trash (recoverable). Pure caches auto-rebuild (no recovery needed). Just say "undo last cleanup".
 </details>
 
 <details>
-<summary><strong>Will it break my apps?</strong></summary>
+<summary><strong>Will it break my Mac apps?</strong></summary>
 
 No. Broom only clears caches and temp files. Running apps are detected and skipped. A health check after cleanup verifies app integrity.
 </details>
 
 <details>
-<summary><strong>How is this different from CleanMyMac?</strong></summary>
+<summary><strong>How is Broom different from CleanMyMac? Why is it a better Mac cleaner?</strong></summary>
 
-Broom is free, open-source, runs inside your AI assistant, learns your habits, and supports full undo. No $40/year. CleanMyMac is a standalone app; Broom is a capability of your AI assistant.
+Broom is free, open-source, runs inside your AI assistant, uses AI to learn your habits, and supports full undo. No $40/year. CleanMyMac is a standalone app; Broom is a capability of your AI assistant — smarter, more transparent.
 </details>
 
 <details>
-<summary><strong>Does it work on Linux / Windows?</strong></summary>
+<summary><strong>Does it work on Linux / Windows or only Mac cleanup?</strong></summary>
 
-macOS only for now. The architecture supports extension to other platforms — contributions welcome!
+macOS only for now (Apple Silicon and Intel). The architecture supports extension to other platforms — contributions welcome!
+</details>
+
+<details>
+<summary><strong>Which Mac apps can Broom clean?</strong></summary>
+
+Currently supports: WeChat, Slack, Lark, Edge, Chrome, Safari, Docker Desktop, Xcode, iOS backups, Ollama, Homebrew, npm/pip caches, and more. Community-driven — you can contribute rules for your favorite apps.
 </details>
 
 <br/>
 
 ## 🤝 Contributing
 
-### Add App Rules
+### Add macOS App Cleanup Rules
 
 Found an app Broom doesn't recognize? Add it to `references/app-rules.yaml`:
 
@@ -365,14 +380,14 @@ Submit a PR with a screenshot of the app's data directories.
 broom/
 ├── README.md                           # Default (中文)
 ├── README_en.md                        # This file (English)
-├── LICENSE                             # MIT
+├── LICENSE                             # MIT open source license
 ├── SKILL.md                            # Agent instructions
 ├── assets/
-│   ├── cleanup-plan-template.md        # Chinese report template
-│   ├── cleanup-plan-template-en.md     # English report template
+│   ├── cleanup-plan-template.md        # Chinese cleanup report template
+│   ├── cleanup-plan-template-en.md     # English cleanup report template
 │   └── broom-preferences-template.yaml # Default preferences
 └── references/
-    └── app-rules.yaml                  # App cleanup rules (community)
+    └── app-rules.yaml                  # macOS app cleanup rules (community)
 ```
 
 <br/>
@@ -386,6 +401,6 @@ broom/
 ---
 
 <p align="center">
-  <strong>No app to install. No subscription. Just say the word.</strong><br/><br/>
+  <strong>Free AI Mac Cleaner. No app. No subscription. Just say the word.</strong><br/><br/>
   Made with 🧹 by <a href="https://github.com/hisunfei">hisunfei</a> and the <a href="https://openclaw.ai">OpenClaw</a> community
 </p>
