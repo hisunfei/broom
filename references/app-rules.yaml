@@ -1,0 +1,317 @@
+# App Cleanup Rules
+# Community can contribute new apps.
+
+schema_version: "2.2"
+
+apps:
+  # === 即时通讯 ===
+  - name: "企业微信"
+    bundle_id: "com.tencent.WeWorkMac"
+    container_path: "~/Library/Containers/com.tencent.WeWorkMac"
+    process_name: "WeWorkMac"
+    category: "app"
+    rules:
+      - {name: "聊天缓存", path: "Data/Documents/Profiles/*/Caches", size_threshold: "1GB", default_action: review, trash_command: "trash <resolved_path>/*"}
+      - {name: "浏览器缓存", path: "Data/Documents/cefcache", default_action: review, trash_command: "trash <resolved_path>/*"}
+      - {name: "推送缓存", path: "Data/Documents/Profiles/*/Publishsys", default_action: review, trash_command: "trash <resolved_path>/*"}
+      - {name: "应用缓存", path: "Data/Library/Caches", default_action: clean, safe_command: "rm -rf <resolved_path>/*"}
+    protected: ["Messages", "Data/Documents/Profiles/*/Messages1"]
+
+  - name: "微信"
+    bundle_id: "com.tencent.xinWeChat"
+    container_path: "~/Library/Containers/com.tencent.xinWeChat"
+    process_name: "WeChat"
+    category: "app"
+    rules:
+      - {name: "旧备份", path: "Data/Documents/xwechat_files/old_backup", default_action: review, trash_command: "trash <resolved_path>"}
+      - {name: "运行日志", path: "Data/Documents/app_data/log", default_action: clean, safe_command: "rm -rf <resolved_path>"}
+      - {name: "radium", path: "Data/Documents/app_data/radium", default_action: clean, safe_command: "rm -rf <resolved_path>"}
+      - {name: "插件", path: "Data/Documents/app_data/xplugin", default_action: clean, safe_command: "rm -rf <resolved_path>"}
+      - {name: "应用缓存", path: "Data/Library/Caches", default_action: clean, safe_command: "rm -rf <resolved_path>/*"}
+    protected: ["mmkv", "config", "xwechat_files/*/config"]
+
+  - name: "飞书"
+    process_name: "Lark"
+    bundle_id: "com.ss.iflow.LarkHelper"
+    category: "app"
+    rules:
+      - {name: "应用缓存", path: "~/Library/Caches/LarkShell", default_action: review, trash_command: "trash <resolved_path>/*"}
+      - {name: "日志", path: "~/Library/Logs/LarkShell", default_action: clean, safe_command: "rm -rf <resolved_path>/*"}
+
+  - name: "钉钉"
+    process_name: "DingTalk"
+    bundle_id: "com.alibaba.DingTalkMac"
+    category: "app"
+    rules:
+      - {name: "应用缓存", path: "~/Library/Caches/DingTalk", default_action: review, trash_command: "trash <resolved_path>/*"}
+      - {name: "日志", path: "~/Library/Logs/DingTalk", default_action: clean, safe_command: "rm -rf <resolved_path>/*"}
+
+  - name: "Slack"
+    process_name: "Slack"
+    bundle_id: "com.tinyspeck.slackmacgap"
+    category: "app"
+    rules:
+      - {name: "应用缓存", path: "~/Library/Caches/com.tinyspeck.slackmacgap", default_action: review, trash_command: "trash <resolved_path>/*"}
+      - {name: "应用数据", path: "~/Library/Application Support/Slack", default_action: review}
+
+  - name: "Telegram"
+    process_name: "Telegram"
+    bundle_id: "ru.keepcoder.Telegram"
+    category: "app"
+    rules:
+      - {name: "应用缓存", path: "~/Library/Caches/ru.keepcoder.Telegram", default_action: review, trash_command: "trash <resolved_path>/*"}
+      - {name: "媒体缓存", path: "~/Library/Application Support/Telegram/messenger", default_action: review}
+
+  # === 浏览器 ===
+  - name: "Google Chrome"
+    process_name: "Google Chrome"
+    bundle_id: "com.google.Chrome"
+    category: "app"
+    rules:
+      - {name: "浏览器缓存", path: "~/Library/Caches/Google/Chrome", default_action: review, trash_command: "trash <resolved_path>/*"}
+      - {name: "应用数据", path: "~/Library/Application Support/Google/Chrome", default_action: review}
+
+  - name: "Microsoft Edge"
+    process_name: "Microsoft Edge"
+    bundle_id: "com.microsoft.edgemac"
+    category: "app"
+    rules:
+      - {name: "浏览器缓存", path: "~/Library/Caches/Microsoft Edge", default_action: review, trash_command: "trash <resolved_path>/*"}
+      - {name: "应用数据", path: "~/Library/Application Support/Microsoft Edge", default_action: review}
+
+  - name: "Safari"
+    process_name: "Safari"
+    bundle_id: "com.apple.Safari"
+    category: "app"
+    rules:
+      - {name: "浏览器缓存", path: "~/Library/Caches/com.apple.Safari", default_action: review, trash_command: "trash <resolved_path>/*"}
+      - {name: "网站数据", path: "~/Library/Safari", default_action: skip}
+
+  - name: "Arc"
+    process_name: "Arc"
+    bundle_id: "company.thebrowser.Browser"
+    category: "app"
+    rules:
+      - {name: "浏览器缓存", path: "~/Library/Caches/company.thebrowser.Browser", default_action: review, trash_command: "trash <resolved_path>/*"}
+      - {name: "应用数据", path: "~/Library/Application Support/Arc", default_action: review}
+
+  # === AI 助手 ===
+  - name: "豆包"
+    process_name: "Doubao"
+    bundle_id: "com.larus.nova.mac"
+    category: "app"
+    rules:
+      - {name: "应用数据", path: "~/Library/Application Support/Doubao", default_action: review}
+      - {name: "应用缓存", path: "~/Library/Caches/Doubao", default_action: clean, safe_command: "rm -rf <resolved_path>/*"}
+
+  - name: "Claude"
+    process_name: "Claude"
+    bundle_id: "com.anthropic.claudefordesktop"
+    category: "app"
+    rules:
+      - {name: "应用缓存", path: "~/Library/Caches/com.anthropic.claudefordesktop", default_action: review, trash_command: "trash <resolved_path>/*"}
+      - {name: "应用数据", path: "~/Library/Application Support/Claude", default_action: review}
+
+  - name: "ChatGPT"
+    process_name: "ChatGPT"
+    bundle_id: "com.openai.chat"
+    category: "app"
+    rules:
+      - {name: "应用缓存", path: "~/Library/Caches/com.openai.chat", default_action: review, trash_command: "trash <resolved_path>/*"}
+      - {name: "应用数据", path: "~/Library/Application Support/ChatGPT", default_action: review}
+
+  # === 开发工具 ===
+  - name: "Cursor"
+    process_name: "Cursor"
+    bundle_id: "com.todesktop.230313mzl4w4u92"
+    category: "app"
+    rules:
+      - {name: "应用缓存", path: "~/Library/Caches/com.todesktop.230313mzl4w4u92", default_action: review, trash_command: "trash <resolved_path>/*"}
+      - {name: "扩展", path: "~/.cursor/extensions", default_action: skip}
+      - {name: "应用数据", path: "~/Library/Application Support/Cursor", default_action: review}
+
+  - name: "Trae CN"
+    process_name: "Trae CN"
+    bundle_id: "cn.trae.app"
+    category: "app"
+    rules:
+      - {name: "应用数据", path: "~/Library/Application Support/Trae CN", default_action: review}
+      - {name: "ShipIt", path: "~/Library/Caches/cn.trae.app.ShipIt", default_action: clean, safe_command: "rm -rf <resolved_path>/*"}
+
+  - name: "VS Code"
+    process_name: "Code"
+    bundle_id: "com.microsoft.VSCode"
+    category: "app"
+    rules:
+      - {name: "应用缓存", path: "~/Library/Caches/com.microsoft.VSCode", default_action: review, trash_command: "trash <resolved_path>/*"}
+      - {name: "扩展", path: "~/.vscode/extensions", default_action: skip}
+      - {name: "应用数据", path: "~/Library/Application Support/Code", default_action: review}
+
+  - name: "JetBrains IDE"
+    detect_command: "ls ~/Library/Application\ Support/JetBrains 2>/dev/null"
+    category: "app"
+    rules:
+      - {name: "应用缓存", path: "~/Library/Caches/JetBrains", default_action: review, trash_command: "trash <resolved_path>/*"}
+      - {name: "日志", path: "~/Library/Logs/JetBrains", default_action: clean, safe_command: "rm -rf <resolved_path>/*"}
+      - {name: "旧版本", path: "~/Library/Application Support/JetBrains/Toolbox/apps", default_action: review}
+
+  - name: "Xcode"
+    process_name: "Xcode"
+    bundle_id: "com.apple.dt.Xcode"
+    category: "app"
+    rules:
+      - {name: "DerivedData", path: "~/Library/Developer/Xcode/DerivedData", default_action: review, trash_command: "trash <resolved_path>/*"}
+      - {name: "Archives", path: "~/Library/Developer/Xcode/Archives", default_action: review}
+      - {name: "iOS DeviceSupport", path: "~/Library/Developer/Xcode/iOS DeviceSupport", default_action: review}
+      - {name: "CoreSimulator", path: "~/Library/Developer/CoreSimulator", default_action: review}
+
+  # === 开发环境 ===
+  - name: "Docker"
+    detect_command: "docker info 2>/dev/null"
+    process_name: "Docker"
+    bundle_id: "com.docker.docker"
+    category: "app"
+    rules:
+      - {name: "悬空资源", command: "docker system prune -f", default_action: review}
+      - {name: "全部未使用镜像", command: "docker image prune -a -f", default_action: skip}
+      - {name: "构建缓存", command: "docker builder prune -f", default_action: review}
+
+  - name: "Ollama"
+    process_name: "Ollama"
+    bundle_id: "com.ollama.ollama"
+    category: "app"
+    rules:
+      - {name: "模型文件", path: "~/.ollama/models", default_action: review}
+
+  - name: "Homebrew"
+    detect_command: "brew --version 2>/dev/null"
+    category: "safe"
+    rules:
+      - {name: "旧版本", command: "brew cleanup --prune=all", default_action: clean}
+      - {name: "缓存", path: "~/Library/Caches/Homebrew", default_action: clean, safe_command: "rm -rf <resolved_path>/*"}
+      - {name: "90天未使用", command: "brew_autoremove", default_action: review}
+
+  - name: "npm"
+    detect_command: "npm --version 2>/dev/null"
+    category: "safe"
+    rules:
+      - {name: "npm 缓存", path: "~/.npm", default_action: clean, safe_command: "rm -rf <resolved_path>/*"}
+
+  - name: "pnpm"
+    detect_command: "pnpm --version 2>/dev/null"
+    category: "safe"
+    rules:
+      - {name: "pnpm store", path: "~/Library/pnpm/store", default_action: clean, safe_command: "rm -rf <resolved_path>/*"}
+
+  - name: "pip"
+    detect_command: "pip --version 2>/dev/null"
+    category: "safe"
+    rules:
+      - {name: "pip 缓存", path: "~/Library/Caches/pip", default_action: clean, safe_command: "rm -rf <resolved_path>/*"}
+
+  - name: "yarn"
+    detect_command: "yarn --version 2>/dev/null"
+    category: "safe"
+    rules:
+      - {name: "yarn 缓存", path: "~/Library/Caches/Yarn", default_action: clean, safe_command: "rm -rf <resolved_path>/*"}
+
+  # === 效率工具 ===
+  - name: "Notion"
+    process_name: "Notion"
+    bundle_id: "notion.id"
+    category: "app"
+    rules:
+      - {name: "应用缓存", path: "~/Library/Caches/notion.id", default_action: review, trash_command: "trash <resolved_path>/*"}
+      - {name: "应用数据", path: "~/Library/Application Support/Notion", default_action: review}
+
+  - name: "Obsidian"
+    process_name: "Obsidian"
+    bundle_id: "md.obsidian"
+    category: "app"
+    rules:
+      - {name: "应用缓存", path: "~/Library/Caches/md.obsidian", default_action: review, trash_command: "trash <resolved_path>/*"}
+
+  - name: "Xmind"
+    process_name: "Xmind"
+    bundle_id: "net.xmind.Xmind"
+    category: "app"
+    rules:
+      - {name: "应用缓存", path: "~/Library/Caches/net.xmind.Xmind", default_action: review, trash_command: "trash <resolved_path>/*"}
+      - {name: "Electron v3 旧版", path: "~/Library/Application Support/Xmind/Electron v3", default_action: review}
+
+  - name: "夸克"
+    process_name: "Quark"
+    bundle_id: "com.quark.mac"
+    category: "app"
+    rules:
+      - {name: "应用数据", path: "~/Library/Application Support/Quark", default_action: review}
+
+  # === 系统 ===
+  - name: "iOS 备份"
+    path: "~/Library/Application Support/MobileSync/Backup"
+    category: "app"
+    rules:
+      - {name: "旧设备备份", default_action: review, trash_command: "trash <resolved_path>/*"}
+
+  - name: "Time Machine"
+    detect_command: "tmutil listlocalsnapshots / 2>/dev/null"
+    category: "app"
+    rules:
+      - {name: "本地快照", command: "tmutil thinlocalsnapshots / 1", default_action: review}
+
+  - name: "Apple Mail"
+    path: "~/Library/Mail"
+    category: "app"
+    rules:
+      - {name: "旧附件", path: "~/Library/Mail/*/Attachments", default_action: review, size_threshold_age: 180}
+
+  # === 游戏 ===
+  - name: "Steam"
+    process_name: "Steam"
+    bundle_id: "com.valvesoftware.steam"
+    category: "skip"
+    rules:
+      - {name: "Steam", path: "~/Library/Application Support/Steam", default_action: skip}
+
+# === 全局保护规则 ===
+global_protected:
+  - "Messages"
+  - "mmkv"
+  - "config"
+  - "*.db"
+  - "*.sqlite"
+  - "*.plist"
+  - "*.keychain"
+
+# === 个人证件关键词 ===
+personal_doc_keywords:
+  - "毕业证"
+  - "学位证"
+  - "户口本"
+  - "结婚证"
+  - "身份证"
+  - "录用通知书"
+  - "离职证明"
+  - "租房合同"
+  - "电子准迁证"
+  - "学历证书"
+  - "工资单"
+  - "承诺书"
+  - "passport"
+  - "visa"
+  - "license"
+  - "contract"
+  - "insurance"
+  - "invoice"
+  - "发票"
+
+# === Downloads 分组模式 ===
+download_group_patterns:
+  - {pattern: "*流量转化*.xlsx, *统一查询*.xlsx, *AB实验*.xlsx, *batch_statistics*.xlsx", label: "数据导出 Excel", label_en: "Data Export Excel"}
+  - {pattern: "*(1)*, *(2)*, *副本*, * 2.*", label: "重复文件", label_en: "Duplicate Files"}
+  - {pattern: "*.dmg, *.pkg", label: "安装包", label_en: "Installers"}
+  - {pattern: "IMG_*.PNG, IMG_*.JPG, 截屏*, screenshot*", label: "截图/临时图片", label_en: "Screenshots"}
+  - {pattern: "*.zip, *.tar.gz, *.7z, *.rar", label: "压缩包", label_en: "Archives"}
+  - {pattern: "*.pptx, *.ppt, *.key", label: "演示文稿", label_en: "Presentations"}
+  - {pattern: "*.mp4, *.mov, *.avi", label: "视频文件", label_en: "Videos"}
+  - {pattern: "*.pdf", label: "PDF 文档", label_en: "PDF Documents"}
