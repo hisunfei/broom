@@ -1,7 +1,20 @@
 ---
 name: broom
-version: "2.0.0"
-description: "Broom 🧹 — AI Mac janitor. Smart disk/memory diagnostic and cleanup with undo, scheduling, trend tracking, personal leaderboard, and conversational config. No app needed."
+display_name: Broom 🧹 Mac 智能清理助手
+display_name_en: Broom 🧹 Smart Mac Cleaner
+description: "AI Mac 磁盘清理工具。说 'broom' 或 '清理电脑' 即可智能扫描缓存、应用数据、Downloads，安全释放空间。支持撤销、趋势追踪、定时清理。"
+description_zh: "你的 AI Mac 电脑管家。不装软件、不付费、说句话就行。智能扫描磁盘，清理缓存、应用数据、Downloads，支持完整撤销和趋势追踪。"
+description_en: "Your AI Mac janitor. No app. No subscription. Just say 'broom'. Smart disk cleanup with undo, scheduling, and trend tracking."
+examples_zh:
+  - "broom"
+  - "清理电脑"
+  - "撤销上次清理"
+examples_en:
+  - "broom"
+  - "clean my Mac"
+  - "undo last cleanup"
+version: 2.1.0
+author: "hisunfei"
 ---
 
 # Broom 🧹
@@ -12,16 +25,6 @@ description: "Broom 🧹 — AI Mac janitor. Smart disk/memory diagnostic and cl
 
 仅支持 macOS。
 
-## 品牌
-
-- **Name**: Broom
-- **Emoji**: 🧹
-- **Slogan (EN)**: "Your AI Mac janitor. No app. No subscription. Just say the word."
-- **Slogan (ZH)**: "你的 AI 电脑管家。不装软件、不付费、说句话就行。"
-- **Voice**: 友好但不啰嗦，像一个懂电脑的朋友。用具体数字说话
-- **Language**: 双语。README 英文，交互自动检测系统语言
-- **Platform**: 平台无关，可在任何支持 macOS 的 AI 助手环境中运行
-
 ## 触发指令
 
 | 指令 | 行为 |
@@ -31,74 +34,15 @@ description: "Broom 🧹 — AI Mac janitor. Smart disk/memory diagnostic and cl
 | 「撤销上次清理」 | 从 cleanup-undo.log 恢复文件 |
 | 「只扫 Downloads」 | 局部扫描 |
 | 「清理统计」「broom stats」 | 展示成就、排行榜、历史趋势 |
-| 「分享 broom」 | 生成项目介绍卡片 |
+| 「检查不常用应用」「哪些应用没用」 | 应用使用分析，识别不常用应用 |
 | 定期任务（cron） | Phase 1 → 通知 → 等待确认 |
 
-## 首次体验（Onboarding）
-
-检测 `~/.broom/broom-preferences.yaml` 是否存在。不存在则触发 onboarding。
-
-```
-🧹 嗨！我是 Broom，你的 AI 电脑管家。
-
-我能帮你：
-  📊 诊断磁盘和内存状况
-  🧹 智能清理缓存、应用数据、下载文件
-  📈 追踪清理趋势，越用越懂你
-  ↩️ 清理后可撤销，不怕误删
-
-我不会：
-  ❌ 偷偷删任何东西 — 每次清理都让你确认
-  ❌ 装任何软件 — 只需要你的 AI 助手
-  ❌ 收费 — 完全免费开源
-
-先让我看看你的电脑？（大约 30 秒）
-```
-
-用户同意后执行 Phase 1，完成后用对话式配置收集偏好，创建 `broom-preferences.yaml`。
-
-## 对话式配置
-
-**永远不要求用户编辑文件**。所有配置通过自然语言对话完成。
-
-### 首次偏好收集
-
-用问答式对话收集 3 个核心偏好：Excel 清理周期、定期检查频率、重复文件处理策略。
-
-### 后续更新
-
-用户随时用自然语言调整，Agent 自动更新 `broom-preferences.yaml` 并确认。
-
-## 偏好文件
-
-`~/.broom/broom-preferences.yaml`，由 Agent 自动维护。
-
-```yaml
-schema_version: "1.0"
-preferences:
-  downloads_excel_age: 180
-  downloads_ppt_age: 180
-  downloads_zip_age: 90
-  downloads_image_age: 90
-  cache_auto_clean: true
-  duplicate_auto_clean: true
-  periodic_scan: "weekly"
-  periodic_day: "sunday"
-  periodic_time: "10:00"
-  quiet_hours_start: "22:00"
-  quiet_hours_end: "08:00"
-learned:
-  frequent_download_patterns: []
-  usually_keeps_patterns: []
-  usually_deletes_patterns: []
-  always_keep_keywords: []
-```
-
-## 工作流总览
+## 工作流
 
 ```
 Phase 0: Onboarding（仅首次）
 Phase 1: 诊断 → cleanup-plan.md + cleanup-plan.yaml
+Phase 1.5: 应用使用分析（可选）→ 识别不常用应用
 Phase 2: 安全检查 → Dry Run → 确认 → 执行 → 健康检查
 Phase 3: 成就 + 个人排行榜 + 偏好学习
 Phase 4: (可选) 定期运行
@@ -106,519 +50,149 @@ Phase 4: (可选) 定期运行
 
 ## Phase 1: 诊断
 
-### 1.1 增量检测
-
-< 30min 且磁盘变化 < 1GB → 复用上次结果。
-
-### 1.2 并行扫描
+### 1.1 并行扫描
 
 三批并行：基础信息 → 缓存与临时文件 → 专项扫描（大文件、iOS 备份、Docker、Time Machine、系统日志、字体缓存、Mail 附件、node_modules、已卸载应用残留、Homebrew 未使用包、历史对比）。
 
-### 1.3 内存优化建议
-
-根据进程列表和 uptime 生成具体可操作建议。
-
-### 1.4 磁盘压力自适应
-
-< 80% 正常 | 80-90% 加强 | > 90% 激进
-
-### 1.5 智能分类
+### 1.2 智能分类
 
 从 `references/app-rules.yaml` 读取规则：🟢 safe / 🟡 app / 🔵 skip
 
-### 1.6 Downloads 智能分组
+### 1.3 生成计划
 
-按 `download_group_patterns` 分组，避免列表过长。
+`cleanup-plan.md`（人类可读）+ `cleanup-plan.yaml`（机器可读）
 
-### 1.7 已卸载应用残留检测
+### 1.4 人格化诊断报告
 
-对比 `/Applications` 和 `~/Library/Application Support`，找出已卸载但残留数据的应用：
+用一段话总结，不直接甩表格。
 
-```bash
-# 获取已安装应用列表
-ls /Applications | sed 's/\.app$//' > /tmp/installed_apps.txt
 
-# 获取 Application Support 中的应用目录
-ls ~/Library/Application\ Support | while read dir; do
-  if ! grep -qi "^$dir" /tmp/installed_apps.txt; then
-    echo "可能已卸载: $dir"
-    du -sh ~/Library/Application\ Support/"$dir"
-  fi
-done
+
+## Phase 1.5: 应用使用分析（可选）
+
+### 1.5.1 数据源
+
+多数据源交叉验证：
+
+| 数据源 | 说明 | 可靠性 |
+|--------|------|--------|
+| Spotlight kMDItemUseCount | 应用使用次数 | ⭐⭐⭐⭐ |
+| Spotlight kMDItemLastUsedDate | 最后使用时间 | ⭐⭐⭐⭐ |
+| ~/Library/Application Support/ | 应用数据目录活动时间 | ⭐⭐⭐⭐⭐ |
+| 进程运行状态 | 当前是否运行 | ⭐⭐⭐⭐⭐ |
+
+### 1.5.2 Bundle ID 映射
+
+应用名称 ≠ 存储目录名称，需要通过 Bundle ID 推断：
+
+```javascript
+const APP_DIR_MAP = {
+  'ChatGPT': ['OpenAI', 'com.openai.codex'],
+  'Doubao': ['Doubao'],
+  '企业微信': ['com.tencent.WeWorkMac'],
+  'WeChat': ['com.tencent.xinWeChat'],
+  'Microsoft OneNote': ['com.microsoft.onenote.mac'],
+  'QQ': ['com.tencent.qq'],
+  'UPDF': ['com.superace.updf.mac']
+};
 ```
 
-### 1.8 Homebrew 未使用包检测
+### 1.5.3 分类规则
 
-```bash
-# 获取 Homebrew 安装的包
-brew list --formula > /tmp/brew_installed.txt
+| 分类 | 条件 | 文案 |
+|------|------|------|
+| 👻 未发现使用痕迹 | 热度 0次 + 无 Application Support 数据 | 未发现使用痕迹 |
+| 🌫️ 已落灰 | 热度 ≤10次 + >90天未活动 | 已落灰，建议检查 |
+| 🔥 活跃使用中 | 7天内有活动 | 今天活跃 / N天前活跃 |
 
-# 检查每个包的最后使用时间（通过访问日志）
-for pkg in $(cat /tmp/brew_installed.txt); do
-  # 检查是否有应用依赖这个包
-  if ! brew uses --installed "$pkg" 2>/dev/null | grep -q .; then
-    echo "可能未使用: $pkg"
-  fi
-done
-```
+### 1.5.4 保护名单
 
-### 1.9 运行中应用检测
-
-```bash
-# 获取运行中的应用进程
-ps aux | grep -i "WeWorkMac|WeChat|Lark|Doubao|Edge|Chrome|Safari" | grep -v grep
-```
-
-### 1.10 大文件扫描策略
-
-**阈值设置：**
-- 磁盘压力 < 80%：扫描 > 500MB 的文件
-- 磁盘压力 80-90%：扫描 > 200MB 的文件
-- 磁盘压力 > 90%：扫描 > 100MB 的文件
-
-**分组策略：**
-1. 按文件类型分组：视频、压缩包、镜像、数据库
-2. 按位置分组：Downloads、Desktop、Documents
-3. 按时间分组：> 6个月、3-6个月、1-3个月
-
-### 1.11 生成计划
-
-生成两个文件：
-
-**cleanup-plan.md**（人类可读）：
-
-```markdown
-# Broom 清理计划
-生成时间: 2026-10-23 13:00
-过期时间: 2026-10-24 13:00
-
-## 🟢 安全清理 (~3.7GB)
-1. npm 缓存 — 714MB
-2. pip 缓存 — 234MB
-...
-
-## 🟡 应用数据 (~8.1GB)
-1. 企业微信 聊天缓存 — 4.5GB ⚠️ 运行中
-...
-
-## 📦 Downloads (~717MB)
-1. Ardot.dmg — 347MB (2天前)
-...
-```
-
-**cleanup-plan.yaml**（机器可读，schema_version: "2.1"）：
+以下应用不提示卸载：
 
 ```yaml
-schema_version: "2.1"
-generated_at: "2026-10-23T13:00:00+08:00"
-expires_at: "2026-10-24T13:00:00+08:00"
-disk_usage_percent: 49
-pressure_level: "normal"
-categories:
-  safe:
-    items:
-      - name: "npm 缓存"
-        path: "~/.npm"
-        size_mb: 714
-        command: "rm -rf ~/.npm/*"
-  app_review:
-    items:
-      - name: "企业微信 聊天缓存"
-        path: "~/Library/Containers/com.tencent.WeWorkMac/Data/Documents/Profiles/*/Caches"
-        size_mb: 4500
-        app_running: true
-        command: "trash <path>/*"
-  downloads:
-    items:
-      - name: "Ardot.dmg"
-        path: "~/Downloads/Ardot.dmg"
-        size_mb: 347
-        age_days: 2
-        action: "review"
-summary:
-  safe_total_mb: 3788
-  review_total_mb: 8100
-  downloads_mb: 717
+protected_apps:
+  # 系统应用
+  - Safari
+  - Keynote
+  - Numbers
+  - Pages
+  
+  # 配套应用
+  - net.downloadhelper    # Chrome 下载助手
+  - 豆包浏览器            # 豆包组件（替身）
+  
+  # 工具类
+  - Tailscale             # VPN
+  - The Unarchiver        # 解压工具
+  
+  # AI 助手
+  - DeepSeek Harness
+  - WorkBuddy
 ```
 
-### 1.12 趋势追踪
+### 1.5.5 自动过滤
 
-读取 `cleanup-history.json`，对比上次清理结果。
+- **替身类型**：kMDItemKind = "替身"，不是独立应用
+- **系统应用**：/System/Applications 下的应用
 
-### 1.13 人格化诊断报告
+### 1.5.6 报告格式
 
-用一段话总结，不直接甩表格。例如：
+```markdown
+### 👻 未发现使用痕迹
 
-"你的磁盘用了 49%，整体还算健康。但扫了一圈下来，发现大约 ~12.5GB 的东西可以收拾。最大的三块是企业微信（9.3GB）、微信（7.4GB）、豆包（4GB）。Downloads 里有个 347MB 的安装包，还有半年前的复盘 PPT。证件类文件已自动保护，不会动。"
+| # | 应用 | 大小 | 热度 | 状态 |
+|---|------|------|------|------|
+| 1 | wechatwebdevtools | 1.1G | 0次 | 未发现使用痕迹 |
+
+### 🌫️ 已落灰，建议检查
+
+| # | 应用 | 大小 | 热度 | 状态 |
+|---|------|------|------|------|
+| 1 | Trae CN | 922M | 0次 | 104天未活动，已落灰 |
+
+### 🔥 活跃使用中
+
+| # | 应用 | 大小 | 热度 | 状态 |
+|---|------|------|------|------|
+| 1 | Microsoft Edge | 1.6G | 9,670次 | 🔥 今天活跃 |
+```
+
+### 1.5.7 文案规范
+
+| 场景 | 文案 |
+|------|------|
+| 热度显示 | 热度: 9,670次 |
+| 从未使用 | 未发现使用痕迹 |
+| 很久没用 | 已落灰，建议检查 |
+| 卸载建议 | 如果不再使用，可考虑卸载 |
+| 不确定 | 数据不足，需要你确认 |
+
+### 1.5.8 安全原则
+
+- **只提示，不自动卸载**
+- 卸载使用 `trash`（可恢复）
+- 用户确认后才会执行
 
 ## Phase 2: 执行
 
 ### 2.1 安全检查
 
-**运行中应用检测**：如果应用正在运行，只清缓存，不动主数据。
-
-**计划过期检查**：如果 cleanup-plan.yaml 的 expires_at 已过，重新生成计划。
-
-**证件二次确认**：对 personal_doc_keywords 中的文件，即使用户说"全部执行"，也要再次确认。
-
-**数据库保护**：永远不删 *.db、*.sqlite、mmkv、config 等文件。
+运行中应用检测 → 计划过期 → 证件二次确认 → 数据库保护
 
 ### 2.2 Dry Run
 
-展示将要执行的操作，醒目标注运行中的应用：
+展示将要执行的操作，醒目标注运行中的应用。
 
-```
-⚠️ 以下应用正在运行，清理后可能需要重启：
-  • 企业微信（WeWorkMac）
-  • 微信（WeChat）
+### 2.3 执行
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+- 🟢 `rm -rf`（纯缓存）
+- 🟡 `trash`（可恢复），降级为 `mv ~/.Trash/`
+- 每项独立 try/catch
+- 写 `cleanup-undo.log`
 
-🟢 安全清理（~3.7GB）— rm -rf 直接删除
-  1. npm 缓存 — 714MB
-  2. pip 缓存 — 234MB
-  ...
+### 2.4 健康检查
 
-🟡 应用数据（~8.1GB）— trash 可恢复删除
-  1. 企业微信 聊天缓存 — 4.5GB ⚠️ 运行中
-  ...
-
-📦 Downloads（~717MB）— trash 可恢复删除
-  1. Ardot.dmg — 347MB (2天前)
-  ...
-
-🔵 已保护（不会动）：
-  • 电子准迁证.jpg、学位证.jpg、租房合同.jpg、毕业证.jpg
-
-📊 预计释放：~12.5GB ≈ 2500 张照片 ≈ 3 部高清电影
-
-确认开始清理？回复「开始」或「取消」
-```
-
-用户回复：「全部执行」/「只清安全的」/「跳过 XX」
-
-### 2.3 执行前快照
-
-创建 `cleanup-snapshot.json` 记录清理前的状态：
-
-```json
-{
-  "timestamp": "2026-10-23T13:00:00+08:00",
-  "disk_before": "49%",
-  "items": [
-    {
-      "name": "npm 缓存",
-      "path": "~/.npm",
-      "size_before_mb": 714,
-      "action": "rm"
-    },
-    {
-      "name": "企业微信 聊天缓存",
-      "path": "~/Library/Containers/com.tencent.WeWorkMac/Data/Documents/Profiles/*/Caches",
-      "size_before_mb": 4500,
-      "action": "trash"
-    }
-  ]
-}
-```
-
-### 2.4 执行清理
-
-**计时开始**：记录 `start_time = Date.now()`
-
-**trash 命令降级策略**：
-
-```bash
-# 优先使用 trash CLI（如果已安装）
-if command -v trash &> /dev/null; then
-  trash <path>
-# 降级为 mv 到废纸篓
-else
-  mv <path> ~/.Trash/
-fi
-```
-
-**执行顺序**：
-1. 🟢 安全项：`rm -rf`（纯缓存）
-2. 🟡 应用数据：`trash`（可恢复）
-3. 📦 Downloads：`trash`（可恢复）
-
-**错误处理**：
-
-```javascript
-for (const item of items) {
-  try {
-    await execute(item);
-    results.push({ name: item.name, status: "ok" });
-  } catch (e) {
-    if (e.message.includes("Permission denied")) {
-      results.push({ name: item.name, status: "skipped", reason: "权限不足" });
-    } else if (e.message.includes("Resource busy")) {
-      results.push({ name: item.name, status: "skipped", reason: "目录被锁" });
-    } else {
-      results.push({ name: item.name, status: "error", error: e.message });
-    }
-  }
-}
-```
-
-**计时结束**：记录 `end_time = Date.now()`，计算 `duration_minutes = (end_time - start_time) / 60000`
-
-**写 cleanup-undo.log**：
-
-```
-# Broom Cleanup Undo Log
-# Date: 2026-10-23T13:00:00+08:00
-# Total freed: ~12.2GB
-
-## 🟢 Safe (rm -rf, cannot undo):
-  ~/.npm/*
-  ~/Library/Caches/pip/*
-
-## 🟡 App data (trash, recoverable from ~/.Trash):
-  ~/Library/Containers/com.tencent.WeWorkMac/Data/Documents/Profiles/*/Caches
-
-## 📦 Downloads (trash, recoverable from ~/.Trash):
-  ~/Downloads/Ardot.dmg
-```
-
-### 2.5 健康检查
-
-验证应用关键目录和 plist 完好：
-
-```bash
-# 检查企业微信关键目录
-ls ~/Library/Containers/com.tencent.WeWorkMac/Data/Documents/Profiles/ 2>/dev/null && echo "OK" || echo "WARN"
-
-# 检查微信关键目录
-ls ~/Library/Containers/com.tencent.xinWeChat/Data/Documents/app_data/ 2>/dev/null && echo "OK" || echo "WARN"
-```
-
-### 2.6 人格化结果报告
-
-用等效换算（照片/电影/歌曲），展示清理前后对比：
-
-```
-🧹 清理完成！
-
-🎉 帮你腾出了 12.2GB！≈ 2440 张照片 ≈ 3 部高清电影
-
-📊 清理明细
-  🟢 安全清理：3.7GB（11项缓存）
-  🟡 应用数据：7.8GB（trash，可恢复）
-  📦 Downloads：0.7GB（13个文件）
-  🔵 已保护：4个证件文件
-
-⏱️ 耗时：2.3 分钟 | 速度：5.3GB/分钟
-
-✅ 健康检查：全部通过
-```
-
-## Phase 3: 成就、排行榜与学习
-
-### 3.1 徽章体系
-
-存储在 `cleanup-history.json` 的 `badges` 字段：
-
-| 徽章 | 名称 | 解锁条件 |
-|------|------|---------|
-| 🌱 | 初次清理 | 完成第一次清理 |
-| 🔥 | 连续 3 周 | 连续 3 周定期清理 |
-| 🔥🔥 | 连续 8 周 | 连续 8 周 |
-| 💎 | 100GB | 累计释放 100GB |
-| 💎💎 | 500GB | 累计释放 500GB |
-| 🧹 | 整洁大师 | 磁盘使用率保持 < 70% |
-| ⚡ | 闪电清理 | 单次释放 > 30GB |
-| 🎯 | 精准打击 | 一次清理没有跳过任何 review 项 |
-| 📦 | 下载控 | Downloads 累计清理 > 500 个文件 |
-| 🧠 | 习惯养成 | 偏好学习累计 > 10 条规则 |
-| 👴 | 老管家 | 使用 Broom 超过 6 个月 |
-
-解锁新徽章时在结果报告中庆祝。
-
-### 3.2 个人排行榜
-
-存储在 `cleanup-history.json` 的 `records` 字段。**和自己的历史比赛**，不收集任何外部数据。
-
-```json
-{
-  "records": {
-    "most_cleaned_single_run": {
-      "value": 12.2,
-      "unit": "GB",
-      "date": "2026-10-23",
-      "label": "单次最多释放"
-    },
-    "longest_streak": {
-      "value": 2,
-      "unit": "weeks",
-      "current": true,
-      "label": "最长连续清理周数"
-    },
-    "fastest_cleanup": {
-      "value": 5.3,
-      "unit": "GB/min",
-      "date": "2026-10-23",
-      "label": "最快清理速度"
-    },
-    "cleanest_day": {
-      "value": 49,
-      "unit": "%",
-      "date": "2026-10-23",
-      "label": "最干净的一天（磁盘使用率）"
-    },
-    "most_files_deleted": {
-      "value": 29,
-      "unit": "files",
-      "date": "2026-10-23",
-      "label": "单次最多文件"
-    },
-    "total_cleaned": {
-      "value": 13.6,
-      "unit": "GB",
-      "label": "累计释放"
-    },
-    "total_runs": {
-      "value": 2,
-      "label": "总共清理次数"
-    },
-    "top_hoarder_app": {
-      "value": "企业微信",
-      "total_growth": "6.7GB",
-      "label": "最爱囤积的应用"
-    }
-  }
-}
-```
-
-#### 展示格式
-
-用户说「broom stats」或清理完成后自动展示：
-
-```
-🧹 你的 Broom 排行榜
-
-🏆 个人最佳
-  ⚡ 单次最多释放    12.2GB（10月23日）← 今天！
-  🔥 最长连续周数    2 周（当前进行中）
-  🚀 最快清理速度    5.3GB/分钟
-  ✨ 最干净的一天    磁盘 49%（10月23日）← 今天！
-  📦 单次最多文件    29 个
-  💎 累计释放        13.6GB
-  🧹 总共清理        2 次
-  📈 最爱囤积        企业微信（+6.7GB）
-
-📈 本周 vs 上周
-  清理量：12.2GB vs 1.4GB
-  磁盘增长：+6GB/周
-
-🎯 下个里程碑
-  再清理 86.4GB → 解锁 💎 100GB
-  再坚持 1 周 → 解锁 🔥 连续 3 周
-```
-
-### 3.3 偏好学习
-
-每次清理后分析用户选择，自动更新 `learned` 字段：
-- 用户每次都保留某类文件 → `usually_keeps_patterns`
-- 用户每次都删某类文件 → `usually_deletes_patterns`
-- 用户新增保留文件 → `always_keep_keywords`
-
-学习后提示：
-```
-💡 我注意到你每次都保留「调研报告」类 PDF，以后遇到类似的我会默认跳过。
-```
-
-## Phase 4: 定期运行
-
-### 4.1 用户选择权
-
-完全由用户决定，对话式配置。可随时开启/关闭/修改频率。
-
-### 4.2 运行模式
-
-只执行 Phase 1，通知用户结果，确认后 Phase 2。
-
-### 4.3 安静时段
-
-22:00-08:00 不发通知。
-
-### 4.4 定期任务实现
-
-使用 AI 助手的定时任务功能（如 `schedule_create`）：
-
-```javascript
-// 每周日上午 10 点执行诊断
-await tools.schedule_create({
-  title: "Broom 周报告",
-  prompt: "执行 Broom Phase 1 诊断，生成清理计划，等待用户确认",
-  weekly: {
-    time: "10:00:00",
-    time_zone: "Asia/Shanghai",
-    weekdays: [7]  // 周日
-  }
-});
-```
-
-### 4.5 通知风格
-
-```
-🧹 Broom 周报告
-
-磁盘本周又涨了 6GB（目前 78%）
-主要增长：企业微信 +4GB | Downloads +2GB
-
-找到 ~8GB 可以清理。要看详情吗？
-
-🎯 再清理 2 次就解锁 💎 100GB
-```
-
-## 撤销功能
-
-用户说「撤销上次清理」→ 读 `cleanup-undo.log` → 展示将恢复内容 → 确认 → 恢复 trash 文件 → 告知 rm 项无法恢复。
-
-```bash
-# 从废纸篓恢复文件
-mv ~/.Trash/Ardot.dmg ~/Downloads/
-```
-
-## 可视化报告
-
-生成 HTML 可视化文件，展示清理前后对比：
-
-```html
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Broom 清理报告</title>
-  <style>
-    body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
-    .before-after { display: flex; gap: 20px; }
-    .circle { width: 200px; height: 200px; border-radius: 50%; }
-    .before { background: conic-gradient(#ff6b6b 49%, #eee 0); }
-    .after { background: conic-gradient(#51cf66 35%, #eee 0); }
-  </style>
-</head>
-<body>
-  <h1>🧹 Broom 清理报告</h1>
-  <div class="before-after">
-    <div>
-      <div class="circle before"></div>
-      <p>清理前：49%</p>
-    </div>
-    <div>
-      <div class="circle after"></div>
-      <p>清理后：35%</p>
-    </div>
-  </div>
-  <p>释放：12.2GB ≈ 2440 张照片</p>
-</body>
-</html>
-```
-
-## 分享功能
-
-用户说「分享 broom」→ 生成项目介绍卡片（Markdown 或 HTML）。
+验证应用关键目录和 plist 完好。
 
 ## 安全红线（10 条）
 
@@ -633,16 +207,18 @@ mv ~/.Trash/Ardot.dmg ~/Downloads/
 9. **仅支持 macOS**
 10. **Undo 日志必须完整记录**
 
-## 应用规则插件化
+## 应用规则
 
-`references/app-rules.yaml` 存储清理规则，社区可贡献。
+`references/app-rules.yaml` 存储 30+ 应用的清理规则，支持社区贡献。
 
-## 多语言
+## 偏好文件
 
-README 英文，交互自动检测系统语言，模板中英文各一份。
+`~/.broom/broom-preferences.yaml`，由 Agent 自动维护。
+
+## 成就系统
+
+11 个徽章 + 个人排行榜，和自己的历史比赛。
 
 ## 版本
 
-当前版本：v2.0.0
-
-查看更新日志：`CHANGELOG.md`
+当前版本：v2.1.0
