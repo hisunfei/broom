@@ -172,6 +172,33 @@ macOS apps you're currently running are automatically detected. Broom only clear
 </details>
 
 <details>
+<summary>🔍 <strong>App Usage Analysis</strong> — find apps you no longer need</summary>
+<br/>
+
+Broom uses multi-source cross-validation (Spotlight + Application Support + process status) to identify apps you no longer use:
+
+```
+📊 Broom App Usage Analysis Report
+
+👻 No usage traces found (3.0GB)
+  1. wechatwebdevtools  1.1G  Heat: 0 times
+  2. Microsoft OneNote  714M  Heat: 0 times
+  3. QQ                 561M  Heat: 0 times
+
+🌫️ Dusty, consider checking (4.1GB)
+  1. Trae CN            922M  Heat: 0 times  104 days inactive
+  2. Microsoft Word     2.4G  Heat: 10 times  77 days inactive
+
+🔥 Actively used (15 apps)
+  1. Microsoft Edge     1.6G  Heat: 9,670 times
+  2. WeCom              1.5G  Heat: 5,940 times
+```
+
+**Suggests only, never auto-uninstalls.** All uninstall operations use `trash` (recoverable) and require your confirmation.
+
+</details>
+
+<details>
 <summary>🤖 <strong>Scheduled Mac Disk Cleanup (optional)</strong> — you don't need to remember</summary>
 <br/>
 
@@ -228,6 +255,7 @@ On first use, Broom introduces itself, guides you through the first Mac disk cle
 | `undo last cleanup` | ↩️ Restore files from Trash |
 | `scan only Downloads` | 🎯 Partial scan of specific directory |
 | `broom stats` | 🏆 Achievements & leaderboard |
+| `check unused apps` | 🔍 App usage analysis, find apps you no longer need |
 | `share broom` | 📤 Generate project intro card |
 
 <br/>
@@ -291,6 +319,9 @@ Phase 0  Onboarding (first time only)
   ▼
 Phase 1  Mac Disk Diagnosis
   │       Parallel scan → Smart grouping → Cleanup plan
+  ▼
+Phase 1.5  App Usage Analysis (Optional)
+  │       Spotlight + Application Support → Identify unused apps
   ▼
 Phase 2  Execute Cleanup
   │       Safety check → Dry Run preview → Confirm → Clean → Health check
@@ -387,7 +418,9 @@ broom/
 │   ├── cleanup-plan-template-en.md     # English cleanup report template
 │   └── broom-preferences-template.yaml # Default preferences
 └── references/
-    └── app-rules.yaml                  # macOS app cleanup rules (community)
+    ├── app-rules.yaml
+    ├── app-usage-analysis-v1.md        # App usage analysis v1 report
+    └── README.md                       # Rules schema documentation                  # macOS app cleanup rules (community)
 ```
 
 <br/>
