@@ -5,6 +5,26 @@ All notable changes to Broom will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [2.1.0] - 2026-11-05
+
+### Added
+- **Phase 1.5: 应用使用分析** — 识别不再需要的应用，建议卸载
+- **多数据源交叉验证** — Spotlight + Application Support + 进程状态
+- **Bundle ID 映射** — 通过 Bundle ID 查找应用实际存储目录，解决应用名称 ≠ 目录名问题
+- **热度评分** — 直接使用 Spotlight 使用次数，直观展示应用活跃度
+- **保护名单** — 系统应用、配套应用、工具类应用不提示卸载
+- **拟人化文案** — "未发现使用痕迹"、"已落灰，建议检查"
+
+### Changed
+- 触发指令新增：`检查不常用应用`、`哪些应用没用`
+- 安全原则：只提示，不自动卸载；卸载使用 `trash`（可恢复）
+- 自动过滤"替身"类型应用（非独立应用）
+
+### Fixed
+- Spotlight 数据盲区：某些应用（如 ChatGPT、Doubao）Spotlight 不记录使用数据，通过 Application Support 活动时间补充
+- 应用名称 ≠ 存储目录名称：通过 Bundle ID 推断实际存储目录
+- 命令行调用的应用（如 mpv）标记为"数据不足"，让用户确认
+
 ## [2.0.0] - 2026-10-23
 
 ### Added

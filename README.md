@@ -172,6 +172,33 @@ Broom 把你的偏好记在 `broom-preferences.yaml` 里，下次自动应用。
 </details>
 
 <details>
+<summary>🔍 <strong>应用使用分析</strong> — 发现你不再需要的应用</summary>
+<br/>
+
+Broom 通过多数据源交叉验证（Spotlight + Application Support + 进程状态），识别你不再使用的应用：
+
+```
+📊 Broom 应用使用分析报告
+
+👻 未发现使用痕迹（3.0GB）
+  1. wechatwebdevtools  1.1G  热度: 0次
+  2. Microsoft OneNote  714M  热度: 0次
+  3. QQ                 561M  热度: 0次
+
+🌫️ 已落灰，建议检查（4.1GB）
+  1. Trae CN            922M  热度: 0次  104天未活动
+  2. Microsoft Word     2.4G  热度: 10次  77天未活动
+
+🔥 活跃使用中（15个）
+  1. Microsoft Edge     1.6G  热度: 9,670次
+  2. 企业微信            1.5G  热度: 5,940次
+```
+
+**只提示，不自动卸载。** 所有卸载操作使用 `trash`（可恢复），需要你确认。
+
+</details>
+
+<details>
 <summary>🤖 <strong>定时 Mac 磁盘清理（可选）</strong> — 你不用记得它</summary>
 <br/>
 
@@ -226,6 +253,7 @@ git clone https://github.com/hisunfei/broom.git ~/.broom/skills/broom
 | `撤销上次清理` | ↩️ 从废纸篓恢复文件 |
 | `只扫 Downloads` | 🎯 局部扫描特定目录 |
 | `broom stats` | 🏆 清理成就和排行榜 |
+| `检查不常用应用` | 🔍 应用使用分析，识别不再需要的应用 |
 | `分享 broom` | 📤 生成项目介绍卡片 |
 
 <br/>
@@ -287,6 +315,9 @@ Phase 0  新手引导（仅首次）
   ▼
 Phase 1  Mac 磁盘诊断
   │       并行扫描 → 智能分组 → 生成清理计划
+  ▼
+Phase 1.5  应用使用分析（可选）
+  │       Spotlight + Application Support → 识别不常用应用
   ▼
 Phase 2  执行清理
   │       安全检查 → Dry Run 预览 → 确认 → 清理 → 健康检查
@@ -383,7 +414,9 @@ broom/
 │   ├── cleanup-plan-template-en.md     # 英文清理报告模板
 │   └── broom-preferences-template.yaml # 默认偏好配置
 └── references/
-    └── app-rules.yaml                  # macOS 应用清理规则（社区贡献）
+    ├── app-rules.yaml                  # macOS 应用清理规则（社区贡献）
+    ├── app-usage-analysis-v1.md        # 应用使用分析第一版报告
+    └── README.md                       # 规则 Schema 说明
 ```
 
 <br/>
