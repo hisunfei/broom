@@ -32,6 +32,9 @@ description: "Broom 🧹 — AI Mac janitor. Smart disk/memory diagnostic and cl
 | 「只扫 Downloads」 | 局部扫描 |
 | 「清理统计」「broom stats」 | 展示成就、排行榜、历史趋势 |
 | 「分享 broom」 | 生成项目介绍卡片 |
+| 「生成报告」「清理报告」 | 生成可视化 HTML 清理报告 |
+| 「分享 broom」 | 生成分享卡片并复制到剪贴板 |
+| 「智能提醒」 | 显示磁盘状态提醒 |
 | 定期任务（cron） | Phase 1 → 通知 → 等待确认 |
 
 ## 首次体验（Onboarding）
@@ -532,6 +535,70 @@ ls ~/Library/Containers/com.tencent.xinWeChat/Data/Documents/app_data/ 2>/dev/nu
 ```
 💡 我注意到你每次都保留「调研报告」类 PDF，以后遇到类似的我会默认跳过。
 ```
+
+## 可视化报告
+
+生成美观的 HTML 清理报告，包含：
+
+- 清理前后磁盘对比（圆环图）
+- 释放空间、清理项目、耗时统计
+- 清理明细列表
+- 历史趋势图（Chart.js）
+- 个人成就徽章
+- 个人记录
+- 一键分享按钮
+- 保存PDF功能
+
+**使用方法：**
+
+```bash
+node ~/.broom/generate-report.js
+```
+
+或说：「生成报告」「清理报告」
+
+报告保存在 `~/.broom/reports/` 目录。
+
+## 智能提醒系统
+
+根据磁盘增长趋势智能提醒用户清理：
+
+- 🚨 **紧急**：磁盘使用率 > 85%
+- ⚠️ **警告**：磁盘每天增长 > 2%
+- 💡 **提示**：超过 7 天未清理
+
+**使用方法：**
+
+```bash
+node ~/.broom/smart-reminder.js
+```
+
+或说：「智能提醒」
+
+## 一键分享功能
+
+生成分享卡片并复制到剪贴板，包含：
+
+- 最近一次清理数据
+- 累计成就
+- 获得徽章
+- GitHub 链接
+
+**使用方法：**
+
+```bash
+node ~/.broom/share.js
+```
+
+或说：「分享 broom」
+
+**分享平台推荐：**
+
+- Twitter/X: 加上 #Broom #Mac清理 #AI工具
+- 微博: 加上 #Broom# #Mac清理# #AI工具#
+- V2EX: 发到"分享创造"节点
+- 掘金: 写篇文章分享使用体验
+- 知乎: 回答"有什么好用的Mac清理工具"
 
 ## Phase 4: 定期运行
 
