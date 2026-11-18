@@ -1,6 +1,6 @@
 ---
 name: broom
-version: "2.0.0"
+version: "2.1.0"
 description: "Broom 🧹 — AI Mac janitor. Smart disk/memory diagnostic and cleanup with undo, scheduling, trend tracking, personal leaderboard, and conversational config. No app needed."
 ---
 
@@ -98,6 +98,50 @@ learned:
 ```
 
 ## 工作流总览
+
+## 多层扫描策略
+
+Broom 采用五层扫描策略，确保不遗漏任何空间占用：
+
+### 第一层：基础缓存扫描
+- ~/Library/Caches（应用缓存）
+- ~/Library/Logs（用户日志）
+- ~/.npm, ~/.cache, ~/.local（包管理器缓存）
+
+### 第二层：隐藏目录扫描
+- ~/.cache（通用缓存）
+- ~/.local（本地安装）
+- ~/.config（配置文件）
+- ~/.docker（Docker 配置）
+- 所有以 . 开头的隐藏目录
+
+### 第三层：容器和虚拟机扫描
+- Docker Desktop 数据
+- Parallels/VMware/VirtualBox 虚拟机
+- UTM/Multipass/Colima 容器
+
+### 第四层：应用完整数据扫描
+- 微信/企业微信/飞书/钉钉（区分缓存和聊天记录）
+- 浏览器（区分缓存和书签/密码）
+- 开发工具（区分缓存和设置/扩展）
+- 笔记应用（区分缓存和笔记库）
+
+### 第五层：系统级扫描
+- /private/var/folders（系统临时文件）
+- /private/var/log（系统日志）
+- /Library/Application Support（系统应用支持）
+- 内核扩展、启动项、睡眠镜像
+
+### 扫描命令示例
+```bash
+# 递归扫描用户主目录，找出所有大目录
+du -sh ~/* ~/.* 2>/dev/null | sort -rh | head -20
+
+# 扫描特定目录的所有子目录
+du -sh ~/Library/Containers/* 2>/dev/null | sort -rh | head -10
+```
+
+
 
 ```
 Phase 0: Onboarding（仅首次）
@@ -697,7 +741,117 @@ mv ~/.Trash/Ardot.dmg ~/Downloads/
 🔗 https://github.com/hisunfei/broom
 ```
 
+
+
+## 三级风险分类
+
+Broom 将所有可清理项目分为三个风险等级：
+
+### 🟢 绝对安全（自动清理）
+- 纯缓存文件（Cache/、Caches/）
+- 日志文件（Logs/、*.log）
+- 临时文件（tmp/、temp/）
+- 包管理器缓存（npm/pip/brew）
+
+**特征**：删除后应用会自动重建，无任何影响
+
+### 🟡 需要确认（用户选择）
+- 浏览器 Service Worker（清理后需要重新加载网页）
+- Docker 镜像（清理后需要重新拉取）
+- 应用旧版本缓存（清理后无法回滚）
+- Downloads 中的旧文件（可能还需要）
+
+**特征**：清理后需要重新配置或下载，但不丢失重要数据
+
+### 🔴 高风险（默认保留）
+- 聊天记录（微信/企业微信/飞书/钉钉）
+- 笔记库（Obsidian/Notion）
+- 浏览器书签/密码/扩展
+- 应用设置和配置文件
+- 授权信息（token/credentials/keyring）
+
+**特征**：删除后可能丢失重要数据，无法恢复
+
+### 分类规则示例
+```yaml
+# app-rules.yaml
+apps:
+  - name: "WeChat"
+    cache_dirs:
+      - "~/Library/Containers/com.tencent.xinWeChat/Data/Library/Caches"
+    data_dirs:
+      - "~/Library/Containers/com.tencent.xinWeChat/Data/Documents"
+    protected:
+      - "*.db"
+      - "config"
+      - "token"
+      - "credentials"
+```
+
 ## 安全红线（10 条）
+
+### 保护名单机制
+
+Broom 维护一个保护名单，这些目录/文件永远不会被清理：
+
+```yaml
+protected_patterns:
+  # 授权和凭证
+  - "**/keyrings/**"
+  - "**/tokens/**"
+  - "**/credentials/**"
+  - "**/auth/**"
+  - "**/.ssh/**"
+  - "**/.gnupg/**"
+  
+  # 应用授权
+  - "**/com.electron.lark/**/token*"
+  - "**/com.alibaba.DingTalkMac/**/auth*"
+  - "**/com.tencent.WeWorkMac/**/credentials*"
+  
+  # 密钥和证书
+  - "**/*.key"
+  - "**/*.pem"
+  - "**/*.cert"
+  - "**/*.p12"
+  
+  # 数据库文件
+  - "**/*.db"
+  - "**/*.sqlite"
+  - "**/*.sqlite3"
+  
+  # 配置文件
+  - "**/config.json"
+  - "**/settings.json"
+  - "**/preferences.plist"
+```
+
+### 清理前检查机制
+
+在清理每个目录前，Broom 会：
+
+1. **检查目录内容**
+   ```bash
+   # 检查是否包含敏感文件
+   find <dir> -type f \( -name "*token*" -o -name "*auth*" -o -name "*key*" \) 2>/dev/null
+   ```
+
+2. **匹配保护名单**
+   - 如果目录路径匹配保护名单，跳过
+   - 如果目录包含敏感文件，跳过
+
+3. **Dry-run 模式**
+   - 先展示要删除的文件列表
+   - 等待用户确认后再执行
+
+```bash
+# Dry-run 示例
+echo "将要清理："
+ls -lh <dir>
+echo "确认清理？(y/n)"
+```
+
+
 
 1. **永远不删个人证件文件**
 2. **永远不删应用数据库**
