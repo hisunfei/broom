@@ -1,5 +1,28 @@
 # Changelog
 
+## [2.3.0] - 2026-11-18
+
+### Added
+- **Phase 5: 自我检查与持续改进**
+  - 5.1 问题自动检测机制（扫描完整性/风险分类/保护名单/用户反馈）
+  - 5.2 问题记录流程（自动写入 DIARY.md）
+  - 5.3 经验教训库查询（基于标签匹配历史问题）
+  - 5.4 持续改进触发条件（用户反馈/系统异常/新发现/定期回顾）
+  - 5.5 自动改进流程（记录→分析→方案→修复→验证→文档→提交）
+  - 5.6 自我优化指标（扫描覆盖率/误删率/满意度/修复时间/重复问题率）
+  - 5.7 持续改进示例（飞书授权/扫描不完整/风险分类）
+
+### Changed
+- 工作流从 4 个 Phase 扩展到 5 个 Phase
+- 版本号: 2.2.0 → 2.3.0
+
+### Improvements
+- 形成持续改进闭环
+- 问题自动检测和记录
+- 经验教训可查询和复用
+- 避免重复犯错
+
+
 All notable changes to Broom will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/),
