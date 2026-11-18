@@ -5,6 +5,31 @@ All notable changes to Broom will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [2.2.0] - 2026-11-18
+
+### Fixed
+- **扫描范围不完整**: 第一次扫描遗漏大量空间占用，现在采用五层扫描策略
+- **风险分类不清晰**: 没有区分安全和不安全的清理项目，现在采用三级风险分类
+- **误删飞书授权**: 清理 ~/.local 时误删飞书 keyring 授权信息，现在添加保护名单机制
+
+### Added
+- **多层扫描策略**: 五层扫描（基础缓存→隐藏目录→容器虚拟机→应用数据→系统级）
+- **三级风险分类**: 🟢绝对安全 / 🟡需要确认 / 🔴高风险
+- **保护名单机制**: 全局保护 keyrings/tokens/credentials/auth
+- **应用精细化规则**: 区分缓存和数据（微信/飞书/浏览器/开发工具）
+- **清理前检查**: Dry-run 模式 + 敏感文件检测
+- **飞书特别保护**: 标注授权信息在 ~/.local/share/keyrings
+
+### Changed
+- SKILL.md: 添加多层扫描、三级分类、保护名单章节
+- app-rules.yaml: 精细化规则，每个应用区分 cache_dirs 和 data_dirs
+- 版本号: 2.1.0 → 2.2.0
+
+### Security
+- 新增保护模式: **/keyrings/**, **/tokens/**, **/credentials/**, **/auth/**
+- 清理前自动检查敏感文件（token/auth/key）
+- 飞书/钉钉/企业微信授权信息永久保护
+
 ## [2.1.0] - 2026-11-05
 
 ### Added

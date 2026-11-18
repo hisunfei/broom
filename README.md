@@ -163,6 +163,51 @@ Broom 把你的偏好记在 `broom-preferences.yaml` 里，下次自动应用。
 
 </details>
 
+
+<details>
+<summary>🔍 <strong>五层深度扫描</strong> — 不遗漏任何空间占用</summary>
+<br/>
+
+Broom 采用五层扫描策略，确保找到所有可清理空间：
+
+1. **基础缓存扫描** — ~/Library/Caches、~/Library/Logs
+2. **隐藏目录扫描** — ~/.cache、~/.local、~/.config
+3. **容器虚拟机扫描** — Docker、Parallels、VMware
+4. **应用完整数据扫描** — 微信/飞书/浏览器（区分缓存和数据）
+5. **系统级扫描** — /private/var/folders、系统日志
+
+上次扫描发现 38.2GB 可清理空间，而普通工具只能发现 3.9GB。
+
+</details>
+
+<details>
+<summary>🛡️ <strong>三级风险分类</strong> — 清楚知道什么能删什么不能删</summary>
+<br/>
+
+| 等级 | 含义 | 处理方式 |
+|------|------|---------|
+| 🟢 绝对安全 | 纯缓存，自动重建 | 自动清理 |
+| 🟡 需要确认 | 清理后需重新配置 | 用户选择 |
+| 🔴 高风险 | 可能丢失重要数据 | 默认保留 |
+
+**保护名单**：keyrings/tokens/credentials/auth 等授权信息永远不会被删除。
+
+</details>
+
+<details>
+<summary>🎯 <strong>应用精细化规则</strong> — 区分缓存和数据</summary>
+<br/>
+
+每个应用都有精细化规则，区分可清理的缓存和必须保留的数据：
+
+- **微信/飞书/钉钉**：缓存可清理，聊天记录必须保留
+- **浏览器**：缓存可清理，书签/密码/扩展必须保留
+- **开发工具**：缓存可清理，设置/扩展必须保留
+
+**飞书特别保护**：授权信息在 ~/.local/share/keyrings，绝对不会被误删。
+
+</details>
+
 <details>
 <summary>⚠️ <strong>运行中应用检测</strong> — 不会打扰你正在用的 Mac 应用</summary>
 <br/>

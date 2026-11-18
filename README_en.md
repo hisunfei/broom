@@ -163,6 +163,51 @@ Weekly macOS disk comparisons. Tells you which app is the biggest hoarder:
 
 </details>
 
+
+<details>
+<summary>🔍 <strong>Five-Layer Deep Scan</strong> — Never miss any space usage</summary>
+<br/>
+
+Broom uses a five-layer scanning strategy to ensure all cleanable space is found:
+
+1. **Basic Cache Scan** — ~/Library/Caches, ~/Library/Logs
+2. **Hidden Directory Scan** — ~/.cache, ~/.local, ~/.config
+3. **Container & VM Scan** — Docker, Parallels, VMware
+4. **Full App Data Scan** — WeChat/Lark/Browser (distinguish cache from data)
+5. **System-Level Scan** — /private/var/folders, system logs
+
+Last scan found 38.2GB cleanable, while typical tools only find 3.9GB.
+
+</details>
+
+<details>
+<summary>🛡️ <strong>Three-Level Risk Classification</strong> — Know exactly what's safe to delete</summary>
+<br/>
+
+| Level | Meaning | Handling |
+|-------|---------|----------|
+| 🟢 Absolutely Safe | Pure cache, auto-rebuild | Auto-clean |
+| 🟡 Needs Confirmation | Requires reconfiguration after cleanup | User choice |
+| 🔴 High Risk | May lose important data | Keep by default |
+
+**Protection List**: keyrings/tokens/credentials/auth are never deleted.
+
+</details>
+
+<details>
+<summary>🎯 <strong>Refined App Rules</strong> — Distinguish cache from data</summary>
+<br/>
+
+Every app has refined rules distinguishing cleanable cache from essential data:
+
+- **WeChat/Lark/DingTalk**: Cache is cleanable, chat history is preserved
+- **Browsers**: Cache is cleanable, bookmarks/passwords/extensions are preserved
+- **Dev Tools**: Cache is cleanable, settings/extensions are preserved
+
+**Lark Special Protection**: Auth info in ~/.local/share/keyrings is never accidentally deleted.
+
+</details>
+
 <details>
 <summary>⚠️ <strong>Running App Detection</strong> — won't touch what you're using</summary>
 <br/>
